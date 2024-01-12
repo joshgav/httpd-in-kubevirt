@@ -1,0 +1,9 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: default
+resources:
+- ssh-public-key-secret.yaml
+- ssh-service.yaml
+- http-service.yaml
+- http-route.yaml
+- vm.yaml
