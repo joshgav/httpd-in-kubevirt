@@ -2,10 +2,9 @@
 
 this_dir=$(cd $(dirname ${BASH_SOURCE[0]}) && pwd)
 
-dnf update --assumeyes
 dnf install --assumeyes httpd
 
-# modify /etc/httpd/conf/httpd.conf with port 8080
-# add content to /var/www/html/index.html (or leave empty for default page)
+sed -i 's/^Listen 80$/Listen 8080/' /etc/httpd/conf/httpd.conf
 apachectl start
-# use password fedora
+
+echo "Hello world from Kubevirt!" > /var/www/html/index.html
