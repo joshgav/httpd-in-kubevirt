@@ -1,0 +1,19 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: httpd-kubevirt
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: httpd-kubevirt
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    path: resources
+    repoURL: https://github.com/joshgav/httpd-in-kubevirt.git
+    targetRevision: main
+    kustomize: {}
+  syncPolicy:
+    automated: {}

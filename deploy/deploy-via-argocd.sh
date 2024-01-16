@@ -6,8 +6,11 @@ if [[ -e "${root_dir}/.env" ]]; then source ${root_dir}/.env; fi
 if [[ -e "${this_dir}/.env" ]]; then source ${this_dir}/.env; fi
 source ${this_dir}/lib/kubernetes.sh
 
-export namespace=httpd-kubevirt
-ensure_namespace ${namespace} true
+argocd_namespace=openshift-gitops
+app_namespace=httpd-kubevirt
+ensure_namespace ${app_namespace}
+
+${this_dir}/create-config.sh ${app_namespace}
 
 ssh_key_path=${root_dir}/.ssh
 if [[ ! -e "${ssh_key_path}/id_rsa" ]]; then
@@ -25,6 +28,4 @@ stringData:
   key1: ${SSH_PUBLIC_KEY}
 EOF
 
-apply_kustomize_dir ${root_dir}/resources
-
-# virtctl ssh fedora@fedora-1 --identity-file .ssh/id_rsa --namespace ${namespace}
+kubectl apply -n ${argocd_namespace} -f ${this_dir}/argocd-application.yaml
